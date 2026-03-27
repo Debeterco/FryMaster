@@ -56,13 +56,15 @@ function turnOn() {
     mTurb.className = 'metric-value warn';
 
     log('Sistema iniciado.', 'gold');
+
+    cameraZone.style.backgroundImage = "url('assets/camera-pov.png')";
 }
 
 /* ── RESET ── */
 function resetAll() {
     if (cookTimer) clearInterval(cookTimer);
     if (cooldownTimer) clearInterval(cooldownTimer);
-    
+
     cooking = false;
     cameraOn = false;
     currentTemp = 22;
@@ -90,6 +92,8 @@ function resetAll() {
     mCor.textContent = '—';
     mTime.textContent = '—';
     confBar.style.width = '0%';
+
+    cameraZone.style.backgroundImage = "";
 }
 
 /* ── DRAG & DROP ── */
@@ -125,6 +129,12 @@ function cookingStart(name, emoji, totalTime) {
     cooking = true;
     cameraZone.classList.remove('ready');
 
+    if (name === 'Frango') {
+        cameraZone.style.backgroundImage = "url('assets/raw_chicken.png')";
+    } else {
+        cameraZone.style.backgroundImage = "url('assets/camera-pov.png')";
+    }
+
     // Visual food
     const foodEl = document.createElement('span');
     foodEl.className = 'food-cooking';
@@ -146,7 +156,7 @@ function cookingStart(name, emoji, totalTime) {
     log(`Iniciando: ${name}`, 'gold');
 
     let tick = 0;
-    
+
     // Intervalo de Temperatura (Curva de aquecimento realista)
     const tempRise = setInterval(() => {
         if (!cooking) return clearInterval(tempRise);
@@ -184,7 +194,7 @@ function cookingStart(name, emoji, totalTime) {
 function finishCooking(name) {
     clearInterval(cookTimer);
     cooking = false;
-    
+
     // Feedback visual turbinado
     cameraZone.classList.add('ready');
     mCor.className = 'metric-value ok';
@@ -192,7 +202,11 @@ function finishCooking(name) {
 
     statusBox.style.color = '#7fff7f';
     statusBox.textContent = `> ✅ ${name} PRONTO! Removendo alimento em breve...`;
-    
+
+    if (name === 'Frango') {
+        cameraZone.style.backgroundImage = "url('assets/grilled-chicken.png')";
+    }
+
     setTimeout(() => {
         removeFood();
     }, 3000);
@@ -201,7 +215,7 @@ function finishCooking(name) {
 function removeFood() {
     const foodEl = cameraZone.querySelector('.food-cooking');
     if (foodEl) foodEl.remove();
-    
+
     cameraZone.classList.remove('ready');
     mFood.textContent = '—';
     mFood.className = 'metric-value off';
@@ -212,9 +226,11 @@ function removeFood() {
     mCor.className = 'metric-value off';
     mTime.textContent = '—';
     mTime.className = 'metric-value off';
-    
+
     log('Alimento removido. Iniciando resfriamento.', '');
     startCoolDown();
+
+    cameraZone.style.backgroundImage = "url('assets/camera-pov.png')";
 }
 
 function cancelProcess() {
@@ -222,14 +238,16 @@ function cancelProcess() {
     clearInterval(cookTimer);
     cooking = false;
     cameraZone.classList.remove('ready');
-    
+
     statusBox.style.color = '#ff4444';
     statusBox.textContent = '> [ALERTA] Processo interrompido. Resfriando sistema...';
-    
+
     const foodEl = cameraZone.querySelector('.food-cooking');
     if (foodEl) foodEl.remove();
 
     startCoolDown();
+
+    cameraZone.style.backgroundImage = "url('assets/camera-pov.png')";
 }
 
 function startCoolDown() {
@@ -243,7 +261,7 @@ function startCoolDown() {
             currentTemp -= 8;
             if (currentTemp < 22) currentTemp = 22;
             mTemp.textContent = currentTemp + ' °C';
-            
+
             if (currentTemp === 22) {
                 clearInterval(cooldownTimer);
                 mTurb.textContent = 'STANDBY';
