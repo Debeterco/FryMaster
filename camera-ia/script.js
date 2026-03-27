@@ -17,7 +17,7 @@ const confBar = document.getElementById('conf-bar');
 /* ── STATE ── */
 let cameraOn = false;
 let cooking = false;
-let isPaused = false; 
+let isPaused = false;
 let cookTimer = null;
 let cooldownTimer = null;
 let currentTemp = 22;
@@ -169,7 +169,7 @@ function cookingStart(name, emoji, totalTime) {
     // Intervalo de Temperatura (Curva de aquecimento realista)
     const tempRise = setInterval(() => {
         if (!cooking) return clearInterval(tempRise);
-        if (isPaused) return; 
+        if (isPaused) return;
 
         if (currentTemp < targetTemp) {
             let step = (targetTemp - currentTemp) * 0.15 + Math.random() * 5;
@@ -179,6 +179,12 @@ function cookingStart(name, emoji, totalTime) {
             mTemp.className = 'metric-value warn';
         }
     }, 400);
+
+    if (name === 'Frango') {
+        cameraZone.style.backgroundImage = "url('assets/raw_chicken.png')";
+    } else {
+        cameraZone.style.backgroundImage = "url('assets/camera-pov.png')";
+    }
 
     // Intervalo de Maillard (Progresso)
     cookTimer = setInterval(() => {
@@ -207,7 +213,7 @@ function finishCooking(name) {
     clearInterval(cookTimer);
     cooking = false;
     isPaused = false;
-    
+
     document.getElementById('process-controls').style.display = 'none';
 
     cameraZone.classList.add('ready');
@@ -240,11 +246,11 @@ function removeFood() {
     mCor.className = 'metric-value off';
     mTime.textContent = '—';
     mTime.className = 'metric-value off';
-    
+
     // ZERAR MAILLARD QUANDO RETIRAR ALIMENTO
     barFill.style.width = '0%';
     pctVal.textContent = '0';
-    
+
     log('Alimento removido. Iniciando resfriamento.', '');
     startCoolDown();
 
@@ -258,7 +264,7 @@ function cancelProcess() {
     isPaused = false;
     cameraZone.classList.remove('ready');
     document.getElementById('process-controls').style.display = 'none';
-    
+
     statusBox.style.color = '#ff4444';
     statusBox.textContent = '> [ALERTA] Processo interrompido. Resfriando sistema...';
 
@@ -301,7 +307,7 @@ function startCoolDown() {
 /* ── BOTÕES MANUAIS ── */
 function togglePause() {
     if (!cooking) return;
-    
+
     isPaused = !isPaused;
     const btnPause = document.getElementById('btn-pause');
 
