@@ -1,8 +1,8 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-    --bg: #f4f4f4; /* Fundo geral da página */
-    --panel-bg: #ffffff; /* Fundo do painel */
+    --bg: #000000; /* RETORNADO PARA PRETO - Fundo geral da página */
+    --panel-bg: #ffffff; /* MANTIDO BRANCO - Fundo do painel */
     --panel-border: #e0e0e0; /* Bordas cinza claro */
     --accent: #000000; /* Laranja substituído por Preto */
     --accent2: #333333; /* Preto um pouco mais claro para efeitos de hover */
@@ -32,7 +32,8 @@ body {
     border: 1px solid var(--panel-border);
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    /* Ajustado o shadow para aparecer melhor no fundo preto */
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
 }
 
 .panel-header {
